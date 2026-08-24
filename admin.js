@@ -45,7 +45,6 @@ async function loadAdminData(){
   renderDashboard();
   renderGames();
   renderRoster();
-  renderHistory();
   renderSettings(currentSettings);
 }
 
@@ -54,8 +53,8 @@ function renderDashboard(){
   const completed=seasonGames.filter(g=>g.status==="completed");
   const next=[...seasonGames].filter(g=>g.status==="upcoming").sort((a,b)=>a.game_date.localeCompare(b.game_date))[0];
 
-  $("dashboard").insertAdjacentHTML("afterbegin", `
-    <section class="stats-grid" id="admin-stats">
+  $("admin-stats").innerHTML = `
+    <section class="stats-grid">
       <article class="stat-card">
         <span class="stat-label">2026 RECORD</span>
         <strong>${esc(recordFor(seasonGames))}</strong>
@@ -72,7 +71,7 @@ function renderDashboard(){
         <small>active players</small>
       </article>
     </section>
-  `);
+  `;
 }
 
 function renderGames(){
@@ -247,23 +246,6 @@ async function deletePlayer(id){
   const {error}=await db.from("roster").delete().eq("id",id);
   if(error)return alert(error.message);
   await loadAdminData();
-}
-
-function renderHistory(){
-  const years=[2025,2024];
-  $("history-admin").innerHTML=`
-    <div class="toolbar"><div><p class="eyebrow">Historical Results</p><h2>History</h2></div></div>
-    <div class="season-dropdowns">
-      ${years.map(year=>`
-        <details class="season-dropdown">
-          <summary><span>${year} HISTORY</span><span class="season-count">${games.filter(g=>Number(g.season)===year).length} games</span></summary>
-          <div class="season-games">${renderAdminSeasonGames(year)}</div>
-        </details>`).join("")}
-    </div>
-  `;
-  document.querySelectorAll("[data-edit-game]").forEach(b=>b.onclick=()=>showGameForm(games.find(g=>g.id===b.dataset.editGame)));
-  document.querySelectorAll("[data-delete-game]").forEach(b=>b.onclick=()=>deleteGame(b.dataset.deleteGame));
-  document.querySelectorAll("[data-quick-game]").forEach(b=>b.onclick=()=>showQuickScore(games.find(g=>g.id===b.dataset.quickGame)));
 }
 
 function renderSettings(settings){
