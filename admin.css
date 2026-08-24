@@ -29,3 +29,13 @@ button.secondary{background:#181d24;color:#fff;border:1px solid var(--line)}
 .row-title{font-weight:800}.row-sub{color:var(--muted);font-size:12px;margin-top:3px}
 .row-actions{display:flex;gap:7px}.danger{background:#291216;color:#ffb2b5}
 @media(max-width:650px){.form-grid{grid-template-columns:1fr}.admin-header{align-items:flex-start}.toolbar{align-items:flex-start;flex-direction:column}}
+
+.season-dropdowns{display:grid;gap:10px}
+.season-dropdown{border:1px solid var(--line);border-radius:16px;background:#090c10;overflow:hidden}
+.season-dropdown summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 18px;font-weight:800;letter-spacing:.08em}
+.season-dropdown summary::-webkit-details-marker{display:none}
+.season-dropdown summary::after{content:"+";color:var(--gold);font-size:20px;line-height:1}
+.season-dropdown[open] summary::after{content:"−"}
+.season-count{color:var(--muted);font-size:11px;font-weight:700;letter-spacing:0}
+.season-games{padding:0 10px 10px;display:grid;gap:8px}
+.empty-admin{padding:20px;color:var(--muted);font-size:13px}
