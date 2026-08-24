@@ -3,58 +3,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
   <meta name="theme-color" content="#050608">
   <meta name="description" content="NDGP Football">
+
   <title>NDGP Football</title>
-  <link rel="icon" href="LOGO_W__FB.png">
+
+  <!-- Browser Icon -->
+  <link rel="icon" type="image/png" href="LOGO_W__FB.png">
+
+  <!-- iPhone Home Screen Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="LOGO_W__FB.png">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <!-- iPhone Web App Settings -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="NDGP Football">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+
   <div class="app-shell">
+
     <header class="topbar">
       <div class="brand">
-        <img src="LOGO_W__FB.png" alt="NDGP Football logo" class="brand-logo">
+
+        <img
+          src="LOGO_W__FB.png"
+          alt="NDGP Football logo"
+          class="brand-logo"
+        >
+
         <div>
-          <div class="brand-kicker">NOTRE DAME GREEN POND</div>
-          <h1>NDGP Football</h1>
+          <div class="brand-kicker">
+            NOTRE DAME GREEN POND
+          </div>
+
+          <h1>
+            NDGP Football
+          </h1>
         </div>
+
       </div>
     </header>
 
+
     <main id="app" class="page">
-      <section id="home-page" class="view active"></section>
-      <section id="schedule-page" class="view"></section>
-      <section id="roster-page" class="view"></section>
-      <section id="history-page" class="view"></section>
+
+      <section
+        id="home-page"
+        class="view active"
+      ></section>
+
+      <section
+        id="schedule-page"
+        class="view"
+      ></section>
+
+      <section
+        id="roster-page"
+        class="view"
+      ></section>
+
+      <section
+        id="history-page"
+        class="view"
+      ></section>
+
     </main>
 
+
     <footer class="site-footer">
+
       <div class="socials">
-        <a href="https://www.instagram.com/ndgp_fb_scores/" target="_blank" rel="noopener">Instagram</a>
+
+        <a
+          href="https://www.instagram.com/ndgp_fb_scores/"
+          target="_blank"
+          rel="noopener"
+        >
+          Instagram
+        </a>
+
         <span>•</span>
-        <a href="https://x.com/ndgp_fb_score" target="_blank" rel="noopener">X</a>
+
+        <a
+          href="https://x.com/ndgp_fb_score"
+          target="_blank"
+          rel="noopener"
+        >
+          X
+        </a>
+
       </div>
-      <div>Managed by NDGP Football Scores</div>
+
+      <div>
+        Managed by NDGP Football Scores
+      </div>
+
     </footer>
 
-    <nav class="floating-nav" aria-label="Primary navigation">
-      <button class="nav-item active home" data-page="home" aria-label="Home">
+
+    <nav
+      class="floating-nav"
+      aria-label="Primary navigation"
+    >
+
+      <button
+        class="nav-item active home"
+        data-page="home"
+        aria-label="Home"
+      >
         <span>HOME</span>
       </button>
-      <button class="nav-item schedule" data-page="schedule" aria-label="Schedule">
+
+      <button
+        class="nav-item schedule"
+        data-page="schedule"
+        aria-label="Schedule"
+      >
         <span>SCHEDULE</span>
       </button>
-      <button class="nav-item roster" data-page="roster" aria-label="Roster">
+
+      <button
+        class="nav-item roster"
+        data-page="roster"
+        aria-label="Roster"
+      >
         <span>ROSTER</span>
       </button>
-      <button class="nav-item history" data-page="history" aria-label="History">
+
+      <button
+        class="nav-item history"
+        data-page="history"
+        aria-label="History"
+      >
         <span>HISTORY</span>
       </button>
+
     </nav>
+
   </div>
 
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="app.js"></script>
+
 </body>
 </html>
-
