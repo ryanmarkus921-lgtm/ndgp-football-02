@@ -24,22 +24,75 @@ async function loadAdminData(){
 }
 
 function renderGames(){
+  const years = [2026, 2025, 2024];
+
   $("games-admin").innerHTML=`
-    <div class="toolbar"><h2>Games</h2><button id="new-game">ADD GAME</button></div>
+    <div class="toolbar">
+      <div>
+        <p class="eyebrow">Schedule Management</p>
+        <h2>Games</h2>
+      </div>
+      <button id="new-game">ADD GAME</button>
+    </div>
     <div id="game-form-wrap"></div>
-    <div class="admin-list">${games.length?games.map(g=>`
-      <div class="admin-row">
-        <div>
-          <div class="row-title">${esc(g.season)} • ${esc(g.opponent)}</div>
-          <div class="row-sub">${dateDisplay(g.game_date)}${g.game_time?" • "+esc(g.game_time):""} • ${esc(g.location||"No location")} • ${g.status}</div>
-          <div class="row-sub">${g.status==="completed"&&g.our_score!=null?`Score: ${g.our_score}–${g.opponent_score}`:""}</div>
-        </div>
-        <div class="row-actions"><button data-edit-game="${g.id}">EDIT</button><button class="danger" data-delete-game="${g.id}">DELETE</button></div>
-      </div>`).join(""):`<div class="muted">No games yet.</div>`}</div>
+    <div class="season-dropdowns">
+      ${years.map(year => `
+        <details class="season-dropdown" ${year === 2026 ? "open" : ""}>
+          <summary>
+            <span>${year === 2026 ? "2026 SEASON" : `${year} HISTORY`}</span>
+            <span class="season-count">${games.filter(g=>Number(g.season)===year).length} games</span>
+          </summary>
+          <div class="season-games">
+            ${renderAdminSeasonGames(year)}
+          </div>
+        </details>
+      `).join("")}
+    </div>
   `;
+
   $("new-game").onclick=()=>showGameForm();
-  document.querySelectorAll("[data-edit-game]").forEach(b=>b.onclick=()=>showGameForm(games.find(g=>g.id===b.dataset.editGame)));
-  document.querySelectorAll("[data-delete-game]").forEach(b=>b.onclick=()=>deleteGame(b.dataset.deleteGame));
+
+  document.querySelectorAll("[data-edit-game]").forEach(b=>{
+    b.onclick=()=>showGameForm(games.find(g=>g.id===b.dataset.editGame));
+  });
+
+  document.querySelectorAll("[data-delete-game]").forEach(b=>{
+    b.onclick=()=>deleteGame(b.dataset.deleteGame);
+  });
+}
+
+function renderAdminSeasonGames(year){
+  const seasonGames = games
+    .filter(g=>Number(g.season)===year)
+    .sort((a,b)=>a.game_date.localeCompare(b.game_date));
+
+  if(!seasonGames.length) {
+    return `<div class="empty-admin">No games have been added for ${year}.</div>`;
+  }
+
+  return seasonGames.map(g=>`
+    <div class="admin-row">
+      <div>
+        <div class="row-title">
+          ${g.week ? `Week ${esc(g.week)} • ` : ""}${esc(g.opponent)}
+        </div>
+        <div class="row-sub">
+          ${dateDisplay(g.game_date)}
+          ${g.game_time ? " • "+esc(g.game_time) : ""}
+          ${g.location ? " • "+esc(g.location) : ""}
+        </div>
+        <div class="row-sub">
+          ${g.status==="completed" && g.our_score!=null
+            ? `Final: ${g.our_score}–${g.opponent_score}`
+            : g.status.toUpperCase()}
+        </div>
+      </div>
+      <div class="row-actions">
+        <button data-edit-game="${g.id}">EDIT</button>
+        <button class="danger" data-delete-game="${g.id}">DELETE</button>
+      </div>
+    </div>
+  `).join("");
 }
 
 function showGameForm(game=null){
