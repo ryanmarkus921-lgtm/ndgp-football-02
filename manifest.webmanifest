@@ -1,0 +1,15 @@
+{
+  "name": "NDGP Football",
+  "short_name": "NDGP Football",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050608",
+  "theme_color": "#050608",
+  "icons": [
+    {
+      "src": "/LOGO_W__FB.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
