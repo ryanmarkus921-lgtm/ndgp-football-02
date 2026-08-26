@@ -17,7 +17,12 @@
 }
 
 * { box-sizing: border-box; }
-html { background: var(--bg); color-scheme: dark; }
+
+html {
+  background: var(--bg);
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
   min-width: 320px;
@@ -28,28 +33,39 @@ body {
   font-family: Inter, system-ui, sans-serif;
 }
 
-button, a { font: inherit; }
-a { color: inherit; text-decoration: none; }
+button, a {
+  font: inherit;
+}
 
-.app-shell { min-height: 100vh; padding-bottom: 112px; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding-bottom: 112px;
+}
+
 .topbar {
   width: min(100% - 32px, var(--max));
   margin: 0 auto;
   padding: 26px 0 14px;
 }
-.brand { display: flex; align-items: center; gap: 14px; }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .brand-logo {
   width: 54px;
   height: 54px;
   object-fit: contain;
   flex: 0 0 auto;
 }
-.brand-kicker {
-  color: var(--gold);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .16em;
-}
+
 .brand h1 {
   margin: 2px 0 0;
   color: var(--text);
@@ -58,25 +74,26 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   letter-spacing: -.03em;
 }
-.header-record {
-  font-size: 22px;
-  margin-top: 2px;
-  font-weight: 700;
-}
 
 .header-record {
-  margin-top: 0;
+  margin-top: 2px;
   color: var(--muted);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .page {
   width: min(100% - 32px, var(--max));
   margin: 0 auto;
 }
-.view { display: none; }
-.view.active { display: block; }
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
 
 .hero-grid {
   display: grid;
@@ -85,12 +102,16 @@ a { color: inherit; text-decoration: none; }
   align-items: stretch;
   margin-top: 14px;
 }
-.hero-intro, .next-card, .section-card {
+
+.hero-intro,
+.next-card,
+.section-card {
   background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
   border: 1px solid var(--line);
   border-radius: 24px;
   box-shadow: 0 20px 50px rgba(0,0,0,.25);
 }
+
 .hero-intro {
   min-height: 315px;
   padding: 30px;
@@ -100,6 +121,7 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   position: relative;
 }
+
 .hero-intro::after {
   content: "";
   position: absolute;
@@ -110,6 +132,7 @@ a { color: inherit; text-decoration: none; }
   right: -90px;
   top: -70px;
 }
+
 .hero-title {
   font-family: "Barlow Condensed", sans-serif;
   font-size: clamp(58px, 10vw, 96px);
@@ -118,9 +141,19 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -.035em;
   margin: 0;
 }
-.hero-subtitle { color: var(--muted); margin: 15px 0 0; max-width: 320px; line-height: 1.55; }
 
-.next-card { padding: 26px; min-height: 315px; }
+.hero-subtitle {
+  color: var(--muted);
+  margin: 15px 0 0;
+  max-width: 320px;
+  line-height: 1.55;
+}
+
+.next-card {
+  padding: 26px;
+  min-height: 315px;
+}
+
 .ticket-card {
   padding: 26px;
   min-height: 315px;
@@ -165,6 +198,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 800;
   letter-spacing: .16em;
 }
+
 .eyebrow {
   color: var(--gold);
   font-size: 11px;
@@ -172,16 +206,21 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: .18em;
   text-transform: uppercase;
 }
+
 .matchup {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   gap: 20px;
   align-items: center;
   margin: 38px 0 30px;
+  min-width: 0;
+  width: 100%;
 }
+
 .matchup > * {
   min-width: 0;
 }
+
 .team {
   min-width: 0;
   width: 100%;
@@ -194,13 +233,18 @@ a { color: inherit; text-decoration: none; }
   word-break: normal;
   white-space: normal;
 }
-.team.away { text-align: right; }
+
+.team.away {
+  text-align: right;
+}
+
 .vs {
   color: var(--gold);
   font-family: "Barlow Condensed", sans-serif;
   font-size: 19px;
   font-weight: 800;
 }
+
 .next-meta {
   border-top: 1px solid var(--line);
   padding-top: 18px;
@@ -209,7 +253,11 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
-.next-meta .location { color: var(--muted); font-weight: 500; }
+
+.next-meta .location {
+  color: var(--muted);
+  font-weight: 500;
+}
 
 .page-heading {
   margin: 20px 0 18px;
@@ -218,6 +266,7 @@ a { color: inherit; text-decoration: none; }
   justify-content: space-between;
   gap: 12px;
 }
+
 .page-heading h2 {
   margin: 0;
   font-family: "Barlow Condensed", sans-serif;
@@ -225,7 +274,11 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   line-height: .9;
 }
-.page-heading p { margin: 0; color: var(--muted); }
+
+.page-heading p {
+  margin: 0;
+  color: var(--muted);
+}
 
 .season-label {
   margin: 26px 0 12px;
@@ -236,44 +289,11 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
 }
 
-.home-record {
-  display: flex;
-  align-items: center;
+.game-list {
+  display: grid;
   gap: 10px;
-  margin: 18px 0 4px;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
 }
 
-.home-record strong {
-  color: var(--gold);
-  font-size: 13px;
-  letter-spacing: .08em;
-}
-
-.schedule-season-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.schedule-season-header .season-label {
-  margin-bottom: 12px;
-}
-
-.schedule-record {
-  color: var(--gold);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.game-list { display: grid; gap: 10px; }
 .game-card {
   display: grid;
   grid-template-columns: 72px 1fr auto;
@@ -284,6 +304,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--surface);
   border-radius: 18px;
 }
+
 .week {
   color: var(--muted);
   font-family: "Barlow Condensed", sans-serif;
@@ -291,7 +312,11 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
   text-transform: uppercase;
 }
-.game-main { min-width: 0; }
+
+.game-main {
+  min-width: 0;
+}
+
 .game-opponent {
   font-family: "Barlow Condensed", sans-serif;
   font-size: 27px;
@@ -299,28 +324,53 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   overflow-wrap: anywhere;
 }
-.game-info { color: var(--muted); font-size: 13px; line-height: 1.45; margin-top: 3px; }
-.game-score { text-align: right; white-space: nowrap; }
+
+.game-info {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+  margin-top: 3px;
+}
+
+.game-score {
+  text-align: right;
+  white-space: nowrap;
+}
+
 .score {
   font-family: "Barlow Condensed", sans-serif;
   font-size: 34px;
   font-weight: 800;
 }
+
 .result {
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .14em;
 }
-.result.win { color: var(--green); }
-.result.loss { color: var(--red); }
-.result.upcoming { color: var(--blue); }
-.result.cancelled { color: var(--muted); }
+
+.result.win {
+  color: var(--green);
+}
+
+.result.loss {
+  color: var(--red);
+}
+
+.result.upcoming {
+  color: var(--blue);
+}
+
+.result.cancelled {
+  color: var(--muted);
+}
 
 .roster-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0,1fr));
   gap: 10px;
 }
+
 .player-card {
   display: grid;
   grid-template-columns: 58px 1fr;
@@ -332,6 +382,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--surface);
   border-radius: 18px;
 }
+
 .jersey {
   color: var(--gold);
   font-family: "Barlow Condensed", sans-serif;
@@ -339,6 +390,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 800;
   line-height: 1;
 }
+
 .player-name {
   font-family: "Barlow Condensed", sans-serif;
   font-size: 25px;
@@ -346,7 +398,12 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   overflow-wrap: anywhere;
 }
-.player-meta { color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+.player-meta {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 3px;
+}
 
 .record {
   display: inline-flex;
@@ -356,6 +413,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--muted);
   font-size: 12px;
 }
+
 .empty {
   padding: 30px;
   text-align: center;
@@ -363,6 +421,7 @@ a { color: inherit; text-decoration: none; }
   border: 1px dashed var(--line);
   border-radius: 18px;
 }
+
 .site-footer {
   width: min(100% - 32px, var(--max));
   margin: 48px auto 0;
@@ -373,9 +432,22 @@ a { color: inherit; text-decoration: none; }
   font-size: 12px;
   line-height: 1.8;
 }
-.socials { display: flex; justify-content: center; gap: 10px; margin-bottom: 5px; }
-.socials a { color: #e9ebef; font-weight: 700; }
-.socials a:hover { color: var(--gold); }
+
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.socials a {
+  color: #e9ebef;
+  font-weight: 700;
+}
+
+.socials a:hover {
+  color: var(--gold);
+}
 
 .floating-nav {
   position: fixed;
@@ -395,6 +467,7 @@ a { color: inherit; text-decoration: none; }
   -webkit-backdrop-filter: blur(18px);
   box-shadow: 0 18px 50px rgba(0,0,0,.45);
 }
+
 .nav-item {
   border: 0;
   background: transparent;
@@ -407,22 +480,63 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: .11em;
   transition: .18s ease;
 }
-.nav-item.active.home { background: rgba(200,168,75,.14); color: var(--gold); }
-.nav-item.active.schedule { background: rgba(91,141,239,.14); color: var(--blue); }
-.nav-item.active.roster { background: rgba(164,124,255,.14); color: var(--purple); }
-.nav-item.active.history { background: rgba(72,199,142,.14); color: var(--green); }
+
+.nav-item.active.home {
+  background: rgba(200,168,75,.14);
+  color: var(--gold);
+}
+
+.nav-item.active.schedule {
+  background: rgba(91,141,239,.14);
+  color: var(--blue);
+}
+
+.nav-item.active.roster {
+  background: rgba(164,124,255,.14);
+  color: var(--purple);
+}
+
+.nav-item.active.history {
+  background: rgba(72,199,142,.14);
+  color: var(--green);
+}
 
 @media (max-width: 720px) {
-  .hero-grid { grid-template-columns: 1fr; }
-  .hero-intro { min-height: 175px; padding: 24px; }
-  .hero-title { font-size: 62px; }
-  .hero-subtitle { margin-top: 10px; }
-  .next-card { min-height: auto; padding: 22px; }
-  .matchup { margin: 30px 0 24px; }
-  .team { font-size: clamp(31px, 10vw, 50px); }
-  .roster-grid { grid-template-columns: 1fr; }
-  
-    .ticket-card {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-intro {
+    min-height: 175px;
+    padding: 24px;
+  }
+
+  .hero-title {
+    font-size: 62px;
+  }
+
+  .hero-subtitle {
+    margin-top: 10px;
+  }
+
+  .next-card {
+    min-height: auto;
+    padding: 22px;
+  }
+
+  .matchup {
+    margin: 30px 0 24px;
+  }
+
+  .team {
+    font-size: clamp(31px, 10vw, 50px);
+  }
+
+  .roster-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-card {
     min-height: 150px;
     padding: 18px 20px;
   }
@@ -441,31 +555,79 @@ a { color: inherit; text-decoration: none; }
   .ticket-action {
     margin-top: 8px;
     padding-top: 8px;
+  }
 }
 
 @media (max-width: 480px) {
-  .topbar, .page, .site-footer { width: min(100% - 22px, var(--max)); }
-  .brand-logo { width: 48px; height: 48px; }
-  .brand-kicker { font-size: 8px; }
-  .brand h1 { font-size: 22px; }
+  .topbar,
+  .page,
+  .site-footer {
+    width: min(100% - 22px, var(--max));
+  }
+
+  .brand-logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .brand h1 {
+    font-size: 22px;
+  }
+
   .header-record {
-  font-size: 22px;
-  margin-top: 2px;
-  font-weight: 700;
-}
-  .hero-intro { min-height: 150px; }
-  .hero-title { font-size: 53px; }
-  .matchup { grid-template-columns: 1fr; text-align: center; gap: 8px; }
-  .team, .team.away { text-align: center; font-size: 42px; }
-  .vs { font-size: 14px; }
-  .game-card { grid-template-columns: 1fr auto; gap: 8px 12px; }
-  .week { grid-column: 1 / -1; }
-  .game-score { grid-column: 2; grid-row: 2; }
-  .game-main { grid-column: 1; grid-row: 2; }
-  .floating-nav { width: calc(100% - 20px); }
-  .nav-item { font-size: 9px; }
-  .schedule-season-header {
-  align-items: center;
-}
-  
+    font-size: 20px;
+    margin-top: 2px;
+    font-weight: 700;
+  }
+
+  .hero-intro {
+    min-height: 150px;
+  }
+
+  .hero-title {
+    font-size: 53px;
+  }
+
+  .matchup {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .team,
+  .team.away {
+    text-align: center;
+    font-size: 42px;
+  }
+
+  .vs {
+    font-size: 14px;
+  }
+
+  .game-card {
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+  }
+
+  .week {
+    grid-column: 1 / -1;
+  }
+
+  .game-score {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .game-main {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .floating-nav {
+    width: calc(100% - 20px);
+  }
+
+  .nav-item {
+    font-size: 9px;
+  }
 }
