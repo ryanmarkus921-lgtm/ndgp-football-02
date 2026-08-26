@@ -74,30 +74,70 @@ function escapeHtml(value) {
 function renderHome() {
   const upcoming = [...state.games]
     .filter(g => g.status === "upcoming")
-    .sort((a,b) => `${a.game_date} ${a.game_time || ""}`.localeCompare(`${b.game_date} ${b.game_time || ""}`))[0];
+    .sort((a, b) =>
+      `${a.game_date} ${a.game_time || ""}`
+        .localeCompare(`${b.game_date} ${b.game_time || ""}`)
+    )[0];
+
+  const ticketUrl =
+    state.settings?.ticket_url ||
+    "https://fan.hudl.com/usa/pa/easton/organization/19428/notre-dame-green-high-school/tickets";
 
   $("home-page").innerHTML = `
     <div class="hero-grid">
-      <section class="hero-intro">
-        <div class="eyebrow">2026 FOOTBALL</div>
-        <h2 class="hero-title">NDGP<br>Football</h2>
-        <p class="hero-subtitle">Notre Dame Green Pond Crusaders.</p>
-      </section>
 
       <section class="next-card">
         <div class="eyebrow">Next Game</div>
+
         ${upcoming ? `
           <div class="matchup">
             <div class="team">Notre Dame</div>
+
             <div class="vs">VS</div>
-            <div class="team away">${escapeHtml(upcoming.opponent)}</div>
+
+            <div class="team away">
+              ${escapeHtml(upcoming.opponent)}
+            </div>
           </div>
+
           <div class="next-meta">
-            ${escapeHtml(formatDate(upcoming.game_date))} - ${escapeHtml(upcoming.game_time || "")}
-            <div class="location">${upcoming.location ? `at ${escapeHtml(upcoming.location)}` : ""}</div>
+            ${escapeHtml(formatDate(upcoming.game_date))}
+            - ${escapeHtml(upcoming.game_time || "")}
+
+            <div class="location">
+              ${upcoming.location
+                ? `at ${escapeHtml(upcoming.location)}`
+                : ""}
+            </div>
           </div>
-        ` : `<div class="empty" style="margin-top:28px">No upcoming game has been added yet.</div>`}
+        ` : `
+          <div class="empty" style="margin-top:28px">
+            No upcoming game has been added yet.
+          </div>
+        `}
       </section>
+
+      <a
+        class="ticket-card"
+        href="${escapeHtml(ticketUrl)}"
+        target="_blank"
+        rel="noopener"
+      >
+        <div class="eyebrow">Tickets</div>
+
+        <div class="ticket-title">
+          BUY<br>TICKETS
+        </div>
+
+        <div class="ticket-description">
+          Get your tickets for the next game.
+        </div>
+
+        <div class="ticket-action">
+          BUY NOW →
+        </div>
+      </a>
+
     </div>
   `;
 }
