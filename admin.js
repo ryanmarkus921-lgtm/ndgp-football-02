@@ -254,6 +254,7 @@ function renderSettings(settings){
     <form id="settings-form" class="panel form-panel">
       <div class="form-grid">
         <label>App Name<input name="app_name" value="${esc(settings?.app_name||"NDGP Football")}" required></label>
+        <label>Ticket Link<input name="ticket_url" type="url" value="${esc(settings?.ticket_url||"")}" placeholder="https://..." required></label>
         <label>Instagram<input name="instagram_url" value="${esc(settings?.instagram_url||"")}" required></label>
         <label>X<input name="x_url" value="${esc(settings?.x_url||"")}" required></label>
         <label class="full">Footer Text<input name="managed_by" value="${esc(settings?.managed_by||"Managed by NDGP Football Scores")}" required></label>
