@@ -458,7 +458,7 @@ a {
   width: min(calc(100% - 28px), 610px);
   padding: 7px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 4px;
   background: rgba(15,18,23,.88);
   border: 1px solid rgba(255,255,255,.12);
@@ -469,6 +469,7 @@ a {
 }
 
 .nav-item {
+  width: 100%;
   border: 0;
   background: transparent;
   color: #7f8792;
