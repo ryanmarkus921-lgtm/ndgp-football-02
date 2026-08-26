@@ -632,3 +632,7 @@ a {
     font-size: 9px;
   }
 }
+.nav-item.active.social-nav {
+  background: rgba(200,168,75,.14);
+  color: var(--gold);
+}
