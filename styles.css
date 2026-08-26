@@ -625,12 +625,16 @@ a {
   }
 
   .floating-nav {
-    width: calc(100% - 20px);
-  }
+  width: calc(100% - 20px);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
 
-  .nav-item {
-    font-size: 9px;
-  }
+.nav-item {
+  width: 100%;
+  min-width: 0;
+  font-size: 8px;
+  letter-spacing: .08em;
+}
 }
 .nav-item.active.social-nav {
   background: rgba(200,168,75,.14);
