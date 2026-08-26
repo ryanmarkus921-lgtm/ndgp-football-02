@@ -442,6 +442,10 @@ a { color: inherit; text-decoration: none; }
   .brand-logo { width: 48px; height: 48px; }
   .brand-kicker { font-size: 8px; }
   .brand h1 { font-size: 22px; }
+  .header-record {
+  font-size: 11px;
+  margin-top: 3px;
+}
   .hero-intro { min-height: 150px; }
   .hero-title { font-size: 53px; }
   .matchup { grid-template-columns: 1fr; text-align: center; gap: 8px; }
