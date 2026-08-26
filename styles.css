@@ -460,8 +460,5 @@ a { color: inherit; text-decoration: none; }
   .schedule-season-header {
   align-items: center;
 }
-
-.schedule-record {
-  font-size: 10px;
-}
+  
 }
