@@ -72,6 +72,9 @@ function escapeHtml(value) {
 }
 
 function renderHome() {
+  const seasonGames = state.games.filter(g => Number(g.season) === 2026);
+  const record = seasonRecord(seasonGames);
+  
   const upcoming = [...state.games]
     .filter(g => g.status === "upcoming")
     .sort((a, b) =>
@@ -84,7 +87,12 @@ function renderHome() {
     "https://fan.hudl.com/usa/pa/easton/organization/19428/notre-dame-green-high-school/tickets";
 
   $("home-page").innerHTML = `
-    <div class="hero-grid">
+  <div class="home-record">
+    <span>2026 RECORD</span>
+    <strong>${record}</strong>
+</div>
+    
+<div class="hero-grid">
 
       <section class="next-card">
         <div class="eyebrow">Next Game</div>
@@ -154,7 +162,10 @@ function renderSchedule() {
         <h2>Schedule</h2>
       </div>
     </div>
-    <div class="season-label">2026 Season</div>
+    <div class="schedule-season-header">
+  <div class="season-label">2026 Season</div>
+  <div class="schedule-record">Record: ${seasonRecord(seasonGames)}</div>
+</div>
     <div class="game-list">
       ${seasonGames.length ? seasonGames.map(gameCard).join("") : `<div class="empty">No 2026 games have been added yet.</div>`}
     </div>
