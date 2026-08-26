@@ -164,7 +164,6 @@ function renderSchedule() {
     </div>
     <div class="schedule-season-header">
   <div class="season-label">2026 Season</div>
-  <div class="schedule-record">Record: ${seasonRecord(seasonGames)}</div>
 </div>
     <div class="game-list">
       ${seasonGames.length ? seasonGames.map(gameCard).join("") : `<div class="empty">No 2026 games have been added yet.</div>`}
@@ -257,8 +256,16 @@ async function loadData() {
   if (settingsRes.error) throw settingsRes.error;
 
   state.games = gamesRes.data || [];
-  state.roster = rosterRes.data || [];
-  state.settings = settingsRes.data || null;
+state.roster = rosterRes.data || [];
+state.settings = settingsRes.data || null;
+
+const seasonGames = state.games.filter(g => Number(g.season) === 2026);
+const record = seasonRecord(seasonGames);
+
+const headerRecord = document.getElementById("header-record");
+if (headerRecord) {
+  headerRecord.textContent = record;
+}
 
   renderHome();
   renderSchedule();
