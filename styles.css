@@ -58,6 +58,13 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -.03em;
 }
 
+.header-record {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .page {
   width: min(100% - 32px, var(--max));
   margin: 0 auto;
@@ -165,6 +172,9 @@ a { color: inherit; text-decoration: none; }
   gap: 20px;
   align-items: center;
   margin: 38px 0 30px;
+}
+.matchup > * {
+  min-width: 0;
 }
 .team {
   min-width: 0;
