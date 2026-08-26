@@ -86,12 +86,7 @@ function renderHome() {
     state.settings?.ticket_url ||
     "https://fan.hudl.com/usa/pa/easton/organization/19428/notre-dame-green-high-school/tickets";
 
-  $("home-page").innerHTML = `
-  <div class="home-record">
-    <span>2026 RECORD</span>
-    <strong>${record}</strong>
-</div>
-    
+  $("home-page").innerHTML = `  
 <div class="hero-grid">
 
       <section class="next-card">
