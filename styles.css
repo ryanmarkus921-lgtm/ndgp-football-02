@@ -680,19 +680,19 @@ a {
     animation: none;
   }
 
-.game-card .result.today {
+.game-card .result.status-today {
   color: var(--gold) !important;
 }
 
-.game-card .result.tomorrow {
+.game-card .result.status-tomorrow {
   color: var(--gold) !important;
 }
 
-.game-card .result.live {
+.game-card .result.status-live {
   color: #ff3b30 !important;
   animation: livePulse 1.2s ease-in-out infinite;
 }
 
-.game-card .result.upcoming {
+.game-card .result.status-upcoming {
   color: var(--blue) !important;
 }
