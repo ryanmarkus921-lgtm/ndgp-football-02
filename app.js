@@ -70,6 +70,69 @@ function escapeHtml(value) {
     "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
   }[m]));
 }
+function getGameDateTime(game) {
+  if (!game?.game_date) return null;
+
+  const time = String(game.game_time || "").trim();
+
+  const match = time.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+
+  if (!match) {
+    return new Date(`${game.game_date}T00:00:00`);
+  }
+
+  let hour = Number(match[1]);
+  const minute = Number(match[2]);
+  const period = match[3].toUpperCase();
+
+  if (period === "PM" && hour !== 12) hour += 12;
+  if (period === "AM" && hour === 12) hour = 0;
+
+  return new Date(
+    `${game.game_date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`
+  );
+}
+
+function automaticGameStatus(game) {
+  if (!game || !game.game_date) return "upcoming";
+
+  // These remain manual overrides.
+  if (game.status === "completed") return "completed";
+  if (game.status === "cancelled") return "cancelled";
+  if (game.status === "live") return "live";
+
+  const gameDate = getGameDateTime(game);
+
+  if (!gameDate) return "upcoming";
+
+  const now = new Date();
+
+  const today = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  const gameDay = new Date(
+    gameDate.getFullYear(),
+    gameDate.getMonth(),
+    gameDate.getDate()
+  );
+
+  if (gameDay.getTime() === today.getTime()) {
+    if (now >= gameDate) return "live";
+    return "today";
+  }
+
+  if (gameDay.getTime() === tomorrow.getTime()) {
+    return "tomorrow";
+  }
+
+  return "upcoming";
+}
 
 function renderHome() {
   const seasonGames = state.games.filter(g => Number(g.season) === 2026);
