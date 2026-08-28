@@ -360,6 +360,21 @@ a {
 .result.upcoming {
   color: var(--blue);
 }
+.game-card .result.status-today {
+  color: #c8a84b !important;
+}
+
+.game-card .result.status-tomorrow {
+  color: #c8a84b !important;
+}
+
+.game-card .result.status-live {
+  color: #ff3b30 !important;
+}
+
+.game-card .result.status-upcoming {
+  color: #5b8def !important;
+}
 
 .result.cancelled {
   color: var(--muted);
