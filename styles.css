@@ -635,4 +635,48 @@ a {
   font-size: 8px;
   letter-spacing: .08em;
 }
+.game-status-area {
+  margin-top: 10px;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.game-countdown {
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.game-live {
+  display: inline-flex;
+  align-items: center;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  animation: livePulse 1.2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: .45;
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-live {
+    animation: none;
+  }
 }
