@@ -217,8 +217,13 @@ a {
   width: 100%;
 }
 .matchup.long-opponent {
-  grid-template-columns: minmax(0, .75fr) auto minmax(0, 1.25fr);
-  gap: 12px;
+  grid-template-columns: minmax(0, .6fr) auto minmax(0, 1.4fr);
+  gap: 10px;
+}
+
+.matchup.long-opponent .team.away {
+  font-size: 42px;
+  line-height: .95;
 }
 
 .matchup > * {
