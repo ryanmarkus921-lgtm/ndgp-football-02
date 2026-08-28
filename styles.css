@@ -584,7 +584,7 @@ a {
     width: min(100% - 22px, var(--max));
   }
   .game-status-area {
-  margin-top: 0;
+  margin-top: -12px;
   line-height: 1;
 }
 
