@@ -37,10 +37,21 @@ function getResult(game) {
 
 function resultText(game) {
   const r = getResult(game);
+
   if (r === "win") return "WIN";
   if (r === "loss") return "LOSS";
   if (r === "tie") return "TIE";
-  if (game.status === "cancelled") return "CANCELLED";
+
+  if (game.status === "cancelled") {
+    return "CANCELLED";
+  }
+
+  const automaticStatus = automaticGameStatus(game);
+
+  if (automaticStatus === "live") return "LIVE";
+  if (automaticStatus === "today") return "TODAY";
+  if (automaticStatus === "tomorrow") return "TOMORROW";
+
   return "UPCOMING";
 }
 
