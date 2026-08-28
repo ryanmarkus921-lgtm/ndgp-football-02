@@ -581,7 +581,7 @@ a {
     width: min(100% - 22px, var(--max));
   }
   .game-status-area {
-  margin-top: 4px;
+  margin-top: 0;
 }
 
 .game-countdown {
