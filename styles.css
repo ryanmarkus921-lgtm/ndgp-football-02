@@ -232,6 +232,9 @@ a {
   overflow-wrap: normal;
   word-break: normal;
   white-space: normal;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .team.away {
