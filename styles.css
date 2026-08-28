@@ -732,3 +732,26 @@ a {
 .game-card .result.status-upcoming {
   color: var(--blue) !important;
 }
+@media (max-width: 480px) {
+  .next-meta,
+  .next-meta .location,
+  .game-countdown {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .next-meta .location {
+    margin-top: 2px;
+  }
+
+  .game-status-area {
+    margin-top: 3px;
+    min-height: 0;
+  }
+
+  .game-countdown {
+    letter-spacing: .04em;
+  }
+}
