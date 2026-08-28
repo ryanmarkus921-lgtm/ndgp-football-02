@@ -355,6 +355,49 @@ document.querySelectorAll(".nav-item").forEach(btn => {
   btn.addEventListener("click", () => switchPage(btn.dataset.page));
 });
 
+function startGameCountdown(game) {
+  const countdown = document.getElementById("game-countdown");
+  const live = document.getElementById("game-live");
+
+  if (!countdown || !live || !game) return;
+
+  const gameDate = getGameDateTime(game);
+  if (!gameDate) return;
+
+  function updateCountdown() {
+    const now = new Date();
+    const difference = gameDate.getTime() - now.getTime();
+
+    if (difference <= 0) {
+      countdown.style.display = "none";
+      live.style.display = "inline";
+      return;
+    }
+
+    const totalSeconds = Math.floor(difference / 1000);
+
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    let text = "";
+
+    if (days > 0) {
+      text = `Starts in ${days}d ${hours}h ${minutes}m`;
+    } else {
+      text = `Starts in ${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    countdown.textContent = text;
+    countdown.style.display = "inline";
+    live.style.display = "none";
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
 loadData().catch(err => {
   console.error(err);
   $("home-page").innerHTML = `
