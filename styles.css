@@ -595,6 +595,11 @@ a {
 
 .next-meta {
   margin-bottom: 0;
+  line-height: 1.25;
+}
+
+.game-countdown {
+  font-size: 13px;
 }
 
   .brand-logo {
