@@ -679,17 +679,22 @@ a {
   .game-live {
     animation: none;
   }
+
 .result.today {
-  color: var(--gold);
+  color: var(--gold) !important;
 }
 
 .result.tomorrow {
-  color: var(--blue);
+  color: var(--gold) !important;
 }
 
 .result.live {
-  color: var(--red);
+  color: var(--red) !important;
   animation: livePulse 1.2s ease-in-out infinite;
+}
+
+.result.upcoming {
+  color: var(--blue);
 }
 
 @keyframes livePulse {
