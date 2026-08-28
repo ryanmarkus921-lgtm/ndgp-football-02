@@ -224,8 +224,12 @@ function renderHome() {
         </div>
       </a>
 
-    </div>
+      </div>
   `;
+
+  if (upcoming) {
+    startGameCountdown(upcoming);
+  }
 }
 
 function renderSchedule() {
