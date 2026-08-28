@@ -188,6 +188,13 @@ function renderHome() {
                 ? `at ${escapeHtml(upcoming.location)}`
                 : ""}
             </div>
+            <div class="game-status-area">
+  <span id="game-countdown" class="game-countdown"></span>
+
+  <span id="game-live" class="game-live" style="display:none;">
+    ● LIVE
+  </span>
+</div>
           </div>
         ` : `
           <div class="empty" style="margin-top:28px">
