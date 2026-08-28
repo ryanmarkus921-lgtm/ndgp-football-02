@@ -169,7 +169,7 @@ function renderHome() {
         <div class="eyebrow">Next Game</div>
 
         ${upcoming ? `
-          <div class="matchup">
+          <div class="matchup ${upcoming.opponent.length > 12 ? "long-opponent" : ""}">
             <div class="team">Notre Dame</div>
 
             <div class="vs">VS</div>
