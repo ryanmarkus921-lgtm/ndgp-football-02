@@ -249,14 +249,34 @@ a {
   border-top: 1px solid var(--line);
   padding-top: 18px;
   color: #dfe3e8;
-  font-weight: 600;
-  line-height: 1.5;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.1;
   overflow-wrap: anywhere;
 }
 
 .next-meta .location {
   color: var(--muted);
-  font-weight: 500;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+.game-status-area {
+  margin-top: 3px;
+  min-height: 0;
+  line-height: 1;
+}
+
+.game-countdown {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .04em;
 }
 
 .page-heading {
@@ -625,59 +645,23 @@ a {
   }
 
   .next-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
     padding-top: 18px;
-    margin: 0;
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    line-height: 1.1;
   }
 
   .next-meta .location {
-    margin: 0;
-    padding: 0;
-    color: var(--muted);
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    line-height: 1.1;
+    margin-top: 2px;
   }
 
   .game-status-area {
-    display: flex;
-    align-items: center;
-    margin-top: 2px;
-    min-height: 0;
-    line-height: 1.1;
+    margin-top: 3px;
   }
 
   .game-countdown {
-    display: inline-flex;
-    align-items: center;
-    margin: 0;
-    color: var(--muted);
-    font-family: "Barlow Condensed", sans-serif;
     font-size: 17px;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: .04em;
-    text-transform: uppercase;
   }
 
   .game-live {
-    display: inline-flex;
-    align-items: center;
-    color: var(--red);
-    font-family: "Barlow Condensed", sans-serif;
     font-size: 17px;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    animation: livePulse 1.2s ease-in-out infinite;
   }
 
   .game-card {
