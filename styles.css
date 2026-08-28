@@ -636,11 +636,16 @@ a {
   }
 
   .matchup {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 8px;
-  }
+  grid-template-columns: 1fr;
+  text-align: center;
+  gap: 8px;
+}
 
+.matchup.long-opponent {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+  
   .team,
   .team.away {
     text-align: center;
