@@ -667,8 +667,8 @@ a {
   letter-spacing: .08em;
 }
 .game-status-area {
-  margin-top: 10px;
-  min-height: 20px;
+  margin-top: 0;
+  min-height: 0;
   display: flex;
   align-items: center;
 }
