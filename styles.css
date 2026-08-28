@@ -689,26 +689,10 @@ a {
 }
 
 .result.live {
-  color: var(--red) !important;
+  color: #ff3b30 !important;
   animation: livePulse 1.2s ease-in-out infinite;
 }
 
 .result.upcoming {
-  color: var(--blue);
-}
-
-@keyframes livePulse {
-  0%, 100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: .45;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .result.live {
-    animation: none;
-  }
+  color: var(--blue) !important;
 }
