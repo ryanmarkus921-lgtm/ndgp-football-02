@@ -580,6 +580,18 @@ a {
   .site-footer {
     width: min(100% - 22px, var(--max));
   }
+  .game-status-area {
+  margin-top: 4px;
+}
+
+.game-countdown {
+  display: inline-block;
+  margin-top: 0;
+}
+
+.next-meta {
+  margin-bottom: 0;
+}
 
   .brand-logo {
     width: 48px;
