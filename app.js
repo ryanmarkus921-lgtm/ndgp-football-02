@@ -70,7 +70,9 @@ function gameCard(game) {
       </div>
       <div class="game-score">
         <div class="score">${score}</div>
-        <div class="result ${result}">${resultText(game)}</div>
+<div class="result ${result} ${automaticGameStatus(game)}">
+  ${resultText(game)}
+</div>
       </div>
     </article>
   `;
