@@ -203,12 +203,13 @@ function renderHome() {
         `}
       </section>
 
-      <a
-        class="ticket-card"
-        href="${escapeHtml(ticketUrl)}"
-        target="_blank"
-        rel="noopener"
-      >
+      ${state.settings?.show_tickets !== false ? `
+<a
+  class="ticket-card"
+  href="${escapeHtml(ticketUrl)}"
+  target="_blank"
+  rel="noopener"
+>
         <div class="eyebrow">Tickets</div>
 
         <div class="ticket-title">
@@ -223,6 +224,7 @@ function renderHome() {
           BUY NOW →
         </div>
       </a>
+` : ""}
 
       </div>
   `;
