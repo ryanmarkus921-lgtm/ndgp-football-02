@@ -774,8 +774,10 @@ function showGameForm(game=null) {
 
     e.preventDefault();
 
-    const f=new FormData(e.target);
-    const data=Object.fromEntries(f.entries());
+    const f = new FormData(e.target);
+const data = Object.fromEntries(f.entries());
+
+data.show_tickets = e.target.elements.show_tickets.checked;
 
     ["season","week","our_score","opponent_score"]
       .forEach(k=>{
@@ -1164,6 +1166,14 @@ function renderSettings(settings) {
             required
           >
         </label>
+        <label class="toggle-setting">
+  <span>Show Buy Tickets Box</span>
+  <input
+    type="checkbox"
+    name="show_tickets"
+    ${settings?.show_tickets !== false ? "checked" : ""}
+  >
+</label>
 
         <label>
           Instagram
