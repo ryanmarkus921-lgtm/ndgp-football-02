@@ -1222,16 +1222,10 @@ function renderSettings(settings) {
 
     e.preventDefault();
 
-    const data=
-      Object.fromEntries(
-        new FormData(e.target).entries()
-      );
+    const data = Object.fromEntries(new FormData(e.target).entries());
+data.show_tickets = e.target.elements.show_tickets.checked;
 
-    const {error}=
-      await db
-        .from("app_settings")
-        .update(data)
-        .eq("id",1);
+const {error} = await db.from("app_settings").update(data).eq("id",1);
 
     if(error) {
       return alert(error.message);
