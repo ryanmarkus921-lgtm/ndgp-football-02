@@ -746,7 +746,7 @@ a {
   }
 }
 /* =========================================
-   RESPONSIVE MATCHUP — NO OVERLAPPING
+   MATCHUP — RESPONSIVE / NO OVERLAP
    ========================================= */
 
 .matchup {
@@ -756,62 +756,81 @@ a {
   width: 100%;
   min-width: 0;
   gap: 12px;
+  margin: 38px 0 30px;
+}
+
+.matchup > * {
+  min-width: 0;
 }
 
 .matchup .team {
   min-width: 0;
   max-width: 100%;
-  overflow-wrap: anywhere;
-  word-break: normal;
-  line-height: .95;
+  width: 100%;
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 800;
+  line-height: .92;
+  text-transform: uppercase;
+  white-space: normal;
+  overflow: hidden;
 }
 
-.matchup .team:first-child {
+.matchup .home-team {
   text-align: left;
+  font-size: clamp(34px, 5vw, 58px);
 }
 
-.matchup .team.away {
+.matchup .away-team {
   text-align: right;
-  font-size: var(--opponent-size, 50px) !important;
-  max-width: 100%;
+  font-size: clamp(30px, 4.5vw, 52px);
 }
 
 .matchup .vs {
   flex-shrink: 0;
   white-space: nowrap;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--gold);
 }
 
-/* Desktop */
-@media (min-width: 721px) {
-  .matchup {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  }
-
-  .matchup .team {
-    font-size: clamp(34px, 4vw, 52px);
-  }
-
-  .matchup .team.away {
-    font-size: var(--opponent-size, 50px) !important;
-  }
-}
-
-/* Phone */
+/* MOBILE */
 @media (max-width: 720px) {
+
   .matchup {
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     gap: 8px;
   }
 
-  .matchup .team {
-    font-size: clamp(30px, 9vw, 46px);
+  .matchup .home-team {
+    font-size: clamp(30px, 10vw, 42px);
   }
 
-  .matchup .team.away {
-    font-size: var(--opponent-size, 42px) !important;
+  .matchup .away-team {
+    font-size: clamp(26px, 8vw, 38px);
   }
 
   .matchup .vs {
-    font-size: 13px;
+    font-size: 14px;
+  }
+}
+
+/* VERY SMALL PHONES */
+@media (max-width: 380px) {
+
+  .matchup {
+    gap: 5px;
+  }
+
+  .matchup .home-team {
+    font-size: 30px;
+  }
+
+  .matchup .away-team {
+    font-size: 26px;
+  }
+
+  .matchup .vs {
+    font-size: 12px;
   }
 }
