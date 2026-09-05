@@ -745,3 +745,73 @@ a {
     animation: none;
   }
 }
+/* =========================================
+   RESPONSIVE MATCHUP — NO OVERLAPPING
+   ========================================= */
+
+.matchup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  gap: 12px;
+}
+
+.matchup .team {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-height: .95;
+}
+
+.matchup .team:first-child {
+  text-align: left;
+}
+
+.matchup .team.away {
+  text-align: right;
+  font-size: var(--opponent-size, 50px) !important;
+  max-width: 100%;
+}
+
+.matchup .vs {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Desktop */
+@media (min-width: 721px) {
+  .matchup {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .matchup .team {
+    font-size: clamp(34px, 4vw, 52px);
+  }
+
+  .matchup .team.away {
+    font-size: var(--opponent-size, 50px) !important;
+  }
+}
+
+/* Phone */
+@media (max-width: 720px) {
+  .matchup {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .matchup .team {
+    font-size: clamp(30px, 9vw, 46px);
+  }
+
+  .matchup .team.away {
+    font-size: var(--opponent-size, 42px) !important;
+  }
+
+  .matchup .vs {
+    font-size: 13px;
+  }
+}
