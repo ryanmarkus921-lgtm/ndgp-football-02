@@ -204,21 +204,18 @@ function renderHome() {
         <div class="eyebrow">Next Game</div>
 
         ${upcoming ? `
-          <div class="matchup ${upcoming.opponent.length > 12 ? "long-opponent" : ""}">
+         <div
+  class="matchup ${upcoming.opponent.length > 12 ? "long-opponent" : ""}"
+  style="--opponent-size: ${Math.max(32, Math.min(50, 52 - (upcoming.opponent.length * 0.7)))}px;"
+>
+  <div class="team">Notre Dame</div>
 
-            <div class="team">
-              Notre Dame
-            </div>
+  <div class="vs">VS</div>
 
-            <div class="vs">
-              VS
-            </div>
-
-            <div class="team away">
-              ${escapeHtml(upcoming.opponent)}
-            </div>
-
-          </div>
+  <div class="team away">
+    ${escapeHtml(upcoming.opponent)}
+  </div>
+</div>
 
           <div class="next-meta">
 
