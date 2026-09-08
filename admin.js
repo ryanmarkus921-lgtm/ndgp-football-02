@@ -777,8 +777,6 @@ function showGameForm(game=null) {
     const f = new FormData(e.target);
 const data = Object.fromEntries(f.entries());
 
-data.show_tickets = e.target.elements.show_tickets.checked;
-
     ["season","week","our_score","opponent_score"]
       .forEach(k=>{
         data[k]=
