@@ -1,15 +1,38 @@
 const SUPABASE_URL = "https://kusolnbifqqzswkizwrv.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_w-vSfMlxRmc-nFLiERiOsQ_rNVt4XIZ";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_w-vSfMlxRmc-nFLiERiOsQ_rNVt4XIZ";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
 const state = {
   games: [],
   roster: [],
   settings: null,
-  page: "home"
+  page: "home",
+  countdownTimer: null,
+  matchupObserver: null
 };
 
 const $ = (id) => document.getElementById(id);
+
+
+/* =========================================================
+   GENERAL HELPERS
+   ========================================================= */
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (m) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[m]));
+}
+
 
 function formatDate(dateString) {
   if (!dateString) return "";
@@ -21,6 +44,7 @@ function formatDate(dateString) {
   }).format(new Date(`${dateString}T12:00:00`));
 }
 
+
 function gameDateLine(game) {
   const date = formatDate(game.game_date);
   const time = game.game_time ? ` - ${game.game_time}` : "";
@@ -29,22 +53,39 @@ function gameDateLine(game) {
   return `${date}${time}${place}`;
 }
 
+
+/* =========================================================
+   GAME STATUS / RESULTS
+   ========================================================= */
+
 function getResult(game) {
   if (game.status !== "completed") return "upcoming";
-  if (game.our_score == null || game.opponent_score == null) return "upcoming";
 
-  if (game.our_score > game.opponent_score) return "win";
-  if (game.our_score < game.opponent_score) return "loss";
+  if (
+    game.our_score == null ||
+    game.opponent_score == null
+  ) {
+    return "upcoming";
+  }
+
+  if (Number(game.our_score) > Number(game.opponent_score)) {
+    return "win";
+  }
+
+  if (Number(game.our_score) < Number(game.opponent_score)) {
+    return "loss";
+  }
 
   return "tie";
 }
 
-function resultText(game) {
-  const r = getResult(game);
 
-  if (r === "win") return "WIN";
-  if (r === "loss") return "LOSS";
-  if (r === "tie") return "TIE";
+function resultText(game) {
+  const result = getResult(game);
+
+  if (result === "win") return "WIN";
+  if (result === "loss") return "LOSS";
+  if (result === "tie") return "TIE";
 
   if (game.status === "cancelled") {
     return "CANCELLED";
@@ -59,57 +100,15 @@ function resultText(game) {
   return "UPCOMING";
 }
 
-function gameCard(game) {
-  const result = getResult(game);
-
-  const score =
-    game.status === "completed" &&
-    game.our_score != null &&
-    game.opponent_score != null
-      ? `${game.our_score}–${game.opponent_score}`
-      : "—";
-
-  return `
-    <article class="game-card">
-      <div class="week">${game.week ? `Week ${game.week}` : "Game"}</div>
-
-      <div class="game-main">
-        <div class="game-opponent">
-          Notre Dame vs ${escapeHtml(game.opponent)}
-        </div>
-
-        <div class="game-info">
-          ${escapeHtml(gameDateLine(game))}
-        </div>
-      </div>
-
-      <div class="game-score">
-        <div class="score">${score}</div>
-
-        <div class="result ${result} status-${automaticGameStatus(game)}">
-          ${resultText(game)}
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (m) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  }[m]));
-}
 
 function getGameDateTime(game) {
   if (!game?.game_date) return null;
 
   const time = String(game.game_time || "").trim();
 
-  const match = time.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  const match = time.match(
+    /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i
+  );
 
   if (!match) {
     return new Date(`${game.game_date}T00:00:00`);
@@ -119,25 +118,43 @@ function getGameDateTime(game) {
   const minute = Number(match[2]);
   const period = match[3].toUpperCase();
 
-  if (period === "PM" && hour !== 12) hour += 12;
-  if (period === "AM" && hour === 12) hour = 0;
+  if (period === "PM" && hour !== 12) {
+    hour += 12;
+  }
+
+  if (period === "AM" && hour === 12) {
+    hour = 0;
+  }
 
   return new Date(
     `${game.game_date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`
   );
 }
 
+
 function automaticGameStatus(game) {
-  if (!game || !game.game_date) return "upcoming";
+  if (!game || !game.game_date) {
+    return "upcoming";
+  }
 
   // Manual overrides
-  if (game.status === "completed") return "completed";
-  if (game.status === "cancelled") return "cancelled";
-  if (game.status === "live") return "live";
+  if (game.status === "completed") {
+    return "completed";
+  }
+
+  if (game.status === "cancelled") {
+    return "cancelled";
+  }
+
+  if (game.status === "live") {
+    return "live";
+  }
 
   const gameDate = getGameDateTime(game);
 
-  if (!gameDate) return "upcoming";
+  if (!gameDate) {
+    return "upcoming";
+  }
 
   const now = new Date();
 
@@ -157,7 +174,10 @@ function automaticGameStatus(game) {
   );
 
   if (gameDay.getTime() === today.getTime()) {
-    if (now >= gameDate) return "live";
+    if (now >= gameDate) {
+      return "live";
+    }
+
     return "today";
   }
 
@@ -168,18 +188,209 @@ function automaticGameStatus(game) {
   return "upcoming";
 }
 
+
+/* =========================================================
+   GAME CARD
+   ========================================================= */
+
+function gameCard(game) {
+  const result = getResult(game);
+  const automaticStatus = automaticGameStatus(game);
+
+  const score =
+    game.status === "completed" &&
+    game.our_score != null &&
+    game.opponent_score != null
+      ? `${game.our_score}–${game.opponent_score}`
+      : "—";
+
+  return `
+    <article class="game-card">
+
+      <div class="week">
+        ${game.week ? `Week ${escapeHtml(game.week)}` : "Game"}
+      </div>
+
+      <div class="game-main">
+
+        <div class="game-opponent">
+          Notre Dame vs ${escapeHtml(game.opponent)}
+        </div>
+
+        <div class="game-info">
+          ${escapeHtml(gameDateLine(game))}
+        </div>
+
+      </div>
+
+      <div class="game-score">
+
+        <div class="score">
+          ${score}
+        </div>
+
+        <div class="result ${result} status-${automaticStatus}">
+          ${resultText(game)}
+        </div>
+
+      </div>
+
+    </article>
+  `;
+}
+
+
+/* =========================================================
+   NEXT GAME OPPONENT FONT FITTING
+   ========================================================= */
+
+/*
+  This is intentionally based on the actual rendered width
+  instead of the number of letters in the opponent's name.
+
+  That means:
+
+  CATASAUQUA
+  NORTH SCHUYLKILL
+  SOUTHERN LEHIGH
+  NORTHWESTERN LEHIGH
+
+  can all automatically receive different font sizes.
+*/
+
+function fitOpponentName() {
+  const matchup = document.querySelector(".matchup");
+  const opponent = document.querySelector(".matchup .away-team");
+
+  if (!matchup || !opponent) {
+    return;
+  }
+
+  const screenWidth = window.innerWidth;
+
+  let maxSize;
+
+  if (screenWidth <= 480) {
+    maxSize = 44;
+  } else if (screenWidth <= 720) {
+    maxSize = 50;
+  } else {
+    maxSize = 58;
+  }
+
+  const minSize = 20;
+
+  opponent.style.setProperty(
+    "--opponent-size",
+    `${maxSize}px`
+  );
+
+  opponent.style.fontSize = `${maxSize}px`;
+
+  let size = maxSize;
+
+  /*
+    Keep shrinking until the actual rendered text fits
+    inside its grid column.
+  */
+  while (
+    opponent.scrollWidth > opponent.clientWidth &&
+    size > minSize
+  ) {
+    size -= 1;
+
+    opponent.style.fontSize = `${size}px`;
+
+    opponent.style.setProperty(
+      "--opponent-size",
+      `${size}px`
+    );
+  }
+
+  /*
+    If the browser hasn't finished calculating layout yet,
+    check again on the next frame.
+  */
+  requestAnimationFrame(() => {
+    if (!document.body.contains(opponent)) {
+      return;
+    }
+
+    let currentSize = parseFloat(
+      getComputedStyle(opponent).fontSize
+    );
+
+    if (!Number.isFinite(currentSize)) {
+      currentSize = size;
+    }
+
+    while (
+      opponent.scrollWidth > opponent.clientWidth &&
+      currentSize > minSize
+    ) {
+      currentSize -= 1;
+
+      opponent.style.fontSize = `${currentSize}px`;
+
+      opponent.style.setProperty(
+        "--opponent-size",
+        `${currentSize}px`
+      );
+    }
+  });
+}
+
+
+/*
+  Watches the matchup itself.
+
+  This catches changes caused by:
+  - browser resizing
+  - phone rotation
+  - different screen sizes
+  - layout changes
+  - sidebar/window changes
+*/
+function setupMatchupObserver() {
+  if (state.matchupObserver) {
+    state.matchupObserver.disconnect();
+    state.matchupObserver = null;
+  }
+
+  const matchup = document.querySelector(".matchup");
+
+  if (!matchup || !window.ResizeObserver) {
+    fitOpponentName();
+    return;
+  }
+
+  state.matchupObserver = new ResizeObserver(() => {
+    fitOpponentName();
+  });
+
+  state.matchupObserver.observe(matchup);
+
+  fitOpponentName();
+}
+
+
+/* =========================================================
+   HOME PAGE
+   ========================================================= */
+
 function renderHome() {
   const seasonGames = state.games.filter(
-    g => Number(g.season) === 2026
+    (game) => Number(game.season) === 2026
   );
 
   const record = seasonRecord(seasonGames);
 
   const upcoming = [...state.games]
-    .filter(g => g.status === "upcoming")
+    .filter((game) => game.status === "upcoming")
     .sort((a, b) =>
-      `${a.game_date} ${a.game_time || ""}`
-        .localeCompare(`${b.game_date} ${b.game_time || ""}`)
+      `${a.game_date} ${a.game_time || ""}`.localeCompare(
+        `${b.game_date} ${b.game_time || ""}`
+      )
     )[0];
 
   const ticketUrl =
@@ -187,11 +398,8 @@ function renderHome() {
     "https://fan.hudl.com/usa/pa/easton/organization/19428/notre-dame-green-high-school/tickets";
 
   /*
-    Show the Tickets box unless the Admin setting is explicitly OFF.
-
-    This handles both:
-    - Supabase boolean false
-    - string "false"
+    Show the Tickets box unless the Admin setting is
+    explicitly OFF.
   */
   const showTickets =
     state.settings?.show_tickets !== false &&
@@ -201,30 +409,42 @@ function renderHome() {
     <div class="hero-grid">
 
       <section class="next-card">
-        <div class="eyebrow">Next Game</div>
 
-        ${upcoming ? `
-    <div
-  class="matchup"
-  data-opponent-length="${upcoming.opponent.length}"
->
-  <div class="team home-team">Notre Dame</div>
+        <div class="eyebrow">
+          Next Game
+        </div>
 
-  <div class="vs">VS</div>
+        ${
+          upcoming
+            ? `
 
-  <div class="team away-team">
-    ${escapeHtml(upcoming.opponent)}
-  </div>
-</div>
+          <div class="matchup">
+
+            <div class="team home-team">
+              Notre Dame
+            </div>
+
+            <div class="vs">
+              VS
+            </div>
+
+            <div class="team away-team">
+              ${escapeHtml(upcoming.opponent)}
+            </div>
+
+          </div>
+
           <div class="next-meta">
 
             ${escapeHtml(formatDate(upcoming.game_date))}
             - ${escapeHtml(upcoming.game_time || "")}
 
             <div class="location">
-              ${upcoming.location
-                ? `at ${escapeHtml(upcoming.location)}`
-                : ""}
+              ${
+                upcoming.location
+                  ? `at ${escapeHtml(upcoming.location)}`
+                  : ""
+              }
             </div>
 
             <div class="game-status-area">
@@ -246,17 +466,24 @@ function renderHome() {
 
           </div>
 
-        ` : `
+        `
+            : `
 
-          <div class="empty" style="margin-top:28px">
+          <div
+            class="empty"
+            style="margin-top:28px"
+          >
             No upcoming game has been added yet.
           </div>
 
-        `}
+        `
+        }
 
       </section>
 
-      ${showTickets ? `
+      ${
+        showTickets
+          ? `
 
         <a
           class="ticket-card"
@@ -283,25 +510,41 @@ function renderHome() {
 
         </a>
 
-      ` : ""}
+      `
+          : ""
+      }
 
     </div>
   `;
 
+  /*
+    Make the opponent name fit immediately after
+    the Home page has been rendered.
+  */
   if (upcoming) {
+    setupMatchupObserver();
     startGameCountdown(upcoming);
   }
 }
 
+
+/* =========================================================
+   SCHEDULE
+   ========================================================= */
+
 function renderSchedule() {
   const seasonGames = state.games
-    .filter(g => Number(g.season) === 2026)
-    .sort((a, b) => a.game_date.localeCompare(b.game_date));
+    .filter((game) => Number(game.season) === 2026)
+    .sort((a, b) =>
+      a.game_date.localeCompare(b.game_date)
+    );
 
   $("schedule-page").innerHTML = `
+
     <div class="page-heading">
 
       <div>
+
         <div class="eyebrow">
           Notre Dame Green Pond
         </div>
@@ -309,82 +552,27 @@ function renderSchedule() {
         <h2>
           Schedule
         </h2>
+
       </div>
 
     </div>
 
     <div class="schedule-season-header">
+
       <div class="season-label">
         2026 Season
       </div>
+
     </div>
 
     <div class="game-list">
+
       ${
         seasonGames.length
           ? seasonGames.map(gameCard).join("")
-          : `<div class="empty">No 2026 games have been added yet.</div>`
-      }
-    </div>
-  `;
-}
-
-function renderRoster() {
-  const players = [...state.roster]
-    .filter(p => p.active !== false)
-    .sort(
-      (a, b) =>
-        Number(a.jersey_number) - Number(b.jersey_number)
-    );
-
-  $("roster-page").innerHTML = `
-    <div class="page-heading">
-
-      <div>
-        <div class="eyebrow">
-          Notre Dame Green Pond
-        </div>
-
-        <h2>
-          Roster
-        </h2>
-      </div>
-
-    </div>
-
-    <div class="roster-grid">
-
-      ${
-        players.length
-          ? players.map(p => `
-              <article class="player-card">
-
-                <div class="jersey">
-                  #${escapeHtml(p.jersey_number)}
-                </div>
-
-                <div>
-
-                  <div class="player-name">
-                    ${escapeHtml(p.name)}
-                  </div>
-
-                  <div class="player-meta">
-                    ${escapeHtml(p.position)}
-                    •
-                    ${escapeHtml(p.grade)}
-                  </div>
-
-                </div>
-
-              </article>
-            `).join("")
           : `
-            <div
-              class="empty"
-              style="grid-column:1/-1"
-            >
-              No roster players have been added yet.
+            <div class="empty">
+              No 2026 games have been added yet.
             </div>
           `
       }
@@ -393,17 +581,107 @@ function renderRoster() {
   `;
 }
 
+
+/* =========================================================
+   ROSTER
+   ========================================================= */
+
+function renderRoster() {
+  const players = [...state.roster]
+    .filter((player) => player.active !== false)
+    .sort(
+      (a, b) =>
+        Number(a.jersey_number) -
+        Number(b.jersey_number)
+    );
+
+  $("roster-page").innerHTML = `
+
+    <div class="page-heading">
+
+      <div>
+
+        <div class="eyebrow">
+          Notre Dame Green Pond
+        </div>
+
+        <h2>
+          Roster
+        </h2>
+
+      </div>
+
+    </div>
+
+    <div class="roster-grid">
+
+      ${
+        players.length
+          ? players
+              .map(
+                (player) => `
+
+              <article class="player-card">
+
+                <div class="jersey">
+                  #${escapeHtml(player.jersey_number)}
+                </div>
+
+                <div>
+
+                  <div class="player-name">
+                    ${escapeHtml(player.name)}
+                  </div>
+
+                  <div class="player-meta">
+                    ${escapeHtml(player.position)}
+                    •
+                    ${escapeHtml(player.grade)}
+                  </div>
+
+                </div>
+
+              </article>
+
+            `
+              )
+              .join("")
+          : `
+
+            <div
+              class="empty"
+              style="grid-column:1/-1"
+            >
+              No roster players have been added yet.
+            </div>
+
+          `
+      }
+
+    </div>
+  `;
+}
+
+
+/* =========================================================
+   RECORD
+   ========================================================= */
+
 function seasonRecord(games) {
   let wins = 0;
   let losses = 0;
   let ties = 0;
 
-  games.forEach(g => {
-    const r = getResult(g);
+  games.forEach((game) => {
+    const result = getResult(game);
 
-    if (r === "win") wins++;
-    else if (r === "loss") losses++;
-    else if (r === "tie") ties++;
+    if (result === "win") {
+      wins++;
+    } else if (result === "loss") {
+      losses++;
+    } else if (result === "tie") {
+      ties++;
+    }
   });
 
   return ties
@@ -411,13 +689,20 @@ function seasonRecord(games) {
     : `${wins}-${losses}`;
 }
 
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
 function renderHistory() {
   const years = [2025, 2024];
 
   $("history-page").innerHTML = `
+
     <div class="page-heading">
 
       <div>
+
         <div class="eyebrow">
           Previous Seasons
         </div>
@@ -425,59 +710,79 @@ function renderHistory() {
         <h2>
           History
         </h2>
+
       </div>
 
     </div>
 
-    ${years.map(year => {
+    ${years
+      .map((year) => {
+        const games = state.games
+          .filter(
+            (game) =>
+              Number(game.season) === year
+          )
+          .sort((a, b) =>
+            a.game_date.localeCompare(
+              b.game_date
+            )
+          );
 
-      const games = state.games
-        .filter(g => Number(g.season) === year)
-        .sort((a, b) =>
-          a.game_date.localeCompare(b.game_date)
-        );
+        return `
 
-      return `
-        <div class="season-label">
-          ${year} • ${seasonRecord(games)}
-        </div>
+          <div class="season-label">
+            ${year} • ${seasonRecord(games)}
+          </div>
 
-        <div class="game-list">
+          <div class="game-list">
 
-          ${
-            games.length
-              ? games.map(gameCard).join("")
-              : `
-                <div class="empty">
-                  No ${year} games have been added yet.
-                </div>
-              `
-          }
+            ${
+              games.length
+                ? games.map(gameCard).join("")
+                : `
+                  <div class="empty">
+                    No ${year} games have been added yet.
+                  </div>
+                `
+            }
 
-        </div>
-      `;
+          </div>
 
-    }).join("")}
+        `;
+      })
+      .join("")}
+
   `;
 }
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
 function switchPage(page) {
   state.page = page;
 
   document
     .querySelectorAll(".view")
-    .forEach(v => v.classList.remove("active"));
+    .forEach((view) => {
+      view.classList.remove("active");
+    });
 
-  document
-    .querySelector(`#${page}-page`)
-    .classList.add("active");
+  const target = document.querySelector(
+    `#${page}-page`
+  );
+
+  if (target) {
+    target.classList.add("active");
+  }
 
   document
     .querySelectorAll(".nav-item")
-    .forEach(btn => {
-      btn.classList.toggle(
+    .forEach((button) => {
+      button.classList.toggle(
         "active",
-        btn.dataset.page === page
+        button.dataset.page === page
       );
     });
 
@@ -487,31 +792,39 @@ function switchPage(page) {
   });
 }
 
+
+/* =========================================================
+   LOAD DATA
+   ========================================================= */
+
 async function loadData() {
-  const [gamesRes, rosterRes, settingsRes] =
-    await Promise.all([
+  const [
+    gamesRes,
+    rosterRes,
+    settingsRes
+  ] = await Promise.all([
 
-      db
-        .from("games")
-        .select("*")
-        .order("game_date", {
-          ascending: true
-        }),
+    db
+      .from("games")
+      .select("*")
+      .order("game_date", {
+        ascending: true
+      }),
 
-      db
-        .from("roster")
-        .select("*")
-        .order("jersey_number", {
-          ascending: true
-        }),
+    db
+      .from("roster")
+      .select("*")
+      .order("jersey_number", {
+        ascending: true
+      }),
 
-      db
-        .from("app_settings")
-        .select("*")
-        .eq("id", 1)
-        .maybeSingle()
+    db
+      .from("app_settings")
+      .select("*")
+      .eq("id", 1)
+      .maybeSingle()
 
-    ]);
+  ]);
 
   if (gamesRes.error) {
     throw gamesRes.error;
@@ -530,7 +843,7 @@ async function loadData() {
   state.settings = settingsRes.data || null;
 
   const seasonGames = state.games.filter(
-    g => Number(g.season) === 2026
+    (game) => Number(game.season) === 2026
   );
 
   const record = seasonRecord(seasonGames);
@@ -548,62 +861,101 @@ async function loadData() {
   renderHistory();
 }
 
-document
-  .querySelectorAll(".nav-item")
-  .forEach(btn => {
 
-    btn.addEventListener(
-      "click",
-      () => switchPage(btn.dataset.page)
-    );
-
-  });
+/* =========================================================
+   COUNTDOWN
+   ========================================================= */
 
 function startGameCountdown(game) {
   const countdown =
-    document.getElementById("game-countdown");
+    document.getElementById(
+      "game-countdown"
+    );
 
   const live =
-    document.getElementById("game-live");
+    document.getElementById(
+      "game-live"
+    );
 
   if (!countdown || !live || !game) {
     return;
   }
 
-  const gameDate = getGameDateTime(game);
+  /*
+    Clear the previous timer.
+
+    This prevents multiple countdowns from running
+    if the Home page is rendered again.
+  */
+  if (state.countdownTimer) {
+    clearInterval(
+      state.countdownTimer
+    );
+
+    state.countdownTimer = null;
+  }
+
+  const gameDate =
+    getGameDateTime(game);
 
   if (!gameDate) {
     return;
   }
 
   function updateCountdown() {
+    /*
+      The elements may have been replaced by a
+      new renderHome() call.
+    */
+    if (
+      !document.body.contains(countdown) ||
+      !document.body.contains(live)
+    ) {
+      clearInterval(
+        state.countdownTimer
+      );
+
+      state.countdownTimer = null;
+
+      return;
+    }
+
     const now = new Date();
 
     const difference =
-      gameDate.getTime() - now.getTime();
+      gameDate.getTime() -
+      now.getTime();
 
     if (difference <= 0) {
+      countdown.style.display =
+        "none";
 
-      countdown.style.display = "none";
-      live.style.display = "inline";
+      live.style.display =
+        "inline";
 
       return;
     }
 
     const totalSeconds =
-      Math.floor(difference / 1000);
+      Math.floor(
+        difference / 1000
+      );
 
     const days =
-      Math.floor(totalSeconds / 86400);
+      Math.floor(
+        totalSeconds / 86400
+      );
 
     const hours =
       Math.floor(
-        (totalSeconds % 86400) / 3600
+        (totalSeconds % 86400) /
+          3600
       );
 
     const minutes =
       Math.floor(
-        (totalSeconds % 3600) / 60
+        (totalSeconds % 3600) /
+          60
       );
 
     const seconds =
@@ -612,34 +964,89 @@ function startGameCountdown(game) {
     let text = "";
 
     if (days > 0) {
-
       text =
         `Starts in ${days}d ${hours}h ${minutes}m`;
-
     } else {
-
       text =
-        `Starts in ${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
+        `Starts in ${String(hours).padStart(
+          2,
+          "0"
+        )}:${String(minutes).padStart(
+          2,
+          "0"
+        )}:${String(seconds).padStart(
+          2,
+          "0"
+        )}`;
     }
 
     countdown.textContent = text;
 
-    countdown.style.display = "inline";
+    countdown.style.display =
+      "inline";
 
-    live.style.display = "none";
+    live.style.display =
+      "none";
   }
 
   updateCountdown();
 
-  setInterval(updateCountdown, 1000);
+  state.countdownTimer =
+    setInterval(
+      updateCountdown,
+      1000
+    );
 }
 
-loadData().catch(err => {
 
-  console.error(err);
+/* =========================================================
+   NAV BUTTON EVENTS
+   ========================================================= */
 
-  $("home-page").innerHTML = `
+document
+  .querySelectorAll(".nav-item")
+  .forEach((button) => {
+
+    button.addEventListener(
+      "click",
+      () =>
+        switchPage(
+          button.dataset.page
+        )
+    );
+
+  });
+
+
+/* =========================================================
+   WINDOW RESIZE
+   ========================================================= */
+
+window.addEventListener(
+  "resize",
+  () => {
+    fitOpponentName();
+  }
+);
+
+
+/* =========================================================
+   START APP
+   ========================================================= */
+
+loadData().catch((error) => {
+
+  console.error(error);
+
+  const homePage =
+    $("home-page");
+
+  if (!homePage) {
+    return;
+  }
+
+  homePage.innerHTML = `
+
     <div
       class="empty"
       style="margin-top:30px"
@@ -655,5 +1062,6 @@ loadData().catch(err => {
       and try again.
 
     </div>
+
   `;
 });
